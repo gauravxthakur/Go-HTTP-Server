@@ -2,6 +2,7 @@ package main
 
 import(
 	"github.com/gauravxthakur/go/internal/app"
+	"github.com/gauravxthakur/go/internal/routes"
 	"net/http"
 	"time"
 	"fmt"
@@ -10,7 +11,7 @@ import(
 func main(){
 	var port int
 	flag.IntVar(&port, "port", 8080, "go backend server port")
-	flag.Parse()
+	flag.Parse()	
 
 	app, err := app.NewApplication()
 
@@ -18,9 +19,10 @@ func main(){
 		panic(err)
 	}
 
-	http.HandleFunc("/health", HealthCheck)
+	r := routes.SetupRoutes(app)
 	server := &http.Server{
 		Addr: fmt.Sprintf(":%d", port),
+		Handler: r,
 		IdleTimeout: time.Minute,
 		ReadTimeout: 10 * time.Second,
 		WriteTimeout: 30 * time.Second,
@@ -32,8 +34,4 @@ func main(){
 	if err != nil{
 		app.Logger.Fatal(err)
 	}
-}
-
-func HealthCheck(w http.ResponseWriter, r *http.Request){
-	fmt.Fprint(w, "Status is available\n")
 }
