@@ -14,7 +14,7 @@ func NewWorkoutHandler() *WorkoutHandler{
 }
 
 func (wh *WorkoutHandler) HandleGetWorkoutByID(w http.ResponseWriter, r *http.Request){
-	paramsWorkoutID := chi.URLParam(r, "workoutID")
+	paramsWorkoutID := chi.URLParam(r, "id")
 	if paramsWorkoutID == ""{
 		http.NotFound(w, r)
 		return
