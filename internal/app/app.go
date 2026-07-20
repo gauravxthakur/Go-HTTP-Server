@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"github.com/gauravxthakur/go/internal/api"
 	"github.com/gauravxthakur/go/internal/store"
+	"database/sql"
 )
 
 type Application struct{
@@ -18,7 +19,7 @@ type Application struct{
 func NewApplication() (*Application, error){
 	pgDB, err := store.Open()
 	if err != nil{
-		return nil, error
+		return nil, err
 	}
 	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
 
