@@ -6,14 +6,20 @@ import (
 	"fmt"
 	"net/http"
 	"github.com/gauravxthakur/go/internal/api"
+	"github.com/gauravxthakur/go/internal/store"
 )
 
 type Application struct{
 	Logger *log.Logger
 	WorkoutHandler *api.WorkoutHandler
+	DB *sql.DB
 }
 
 func NewApplication() (*Application, error){
+	pgDB, err := store.Open()
+	if err != nil{
+		return nil, error
+	}
 	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
 
 	// our stores will go here
@@ -24,6 +30,7 @@ func NewApplication() (*Application, error){
 	app := &Application{
 		Logger : logger,
 		WorkoutHandler: workoutHandler,
+		DB: pgDB,
 	}
 	return app, nil
 }
